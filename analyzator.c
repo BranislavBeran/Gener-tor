@@ -63,7 +63,7 @@ void analyzator(char fileName[]){
 			priemer+=*A[i].p[j];
 		}
 		priemer_floatov[i]=priemer/(*A[i].d);
-		printf("priemer v %d.postupnosti je= %f\n",i,priemer_floatov[i]);
+		printf("priemer v %d.postupnosti je= %f\n",i+1,priemer_floatov[i]);
 		priemer=0;
 	}																		//ulozenie priemerov v jednotlivych postupnostiach
 	
