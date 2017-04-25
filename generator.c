@@ -44,13 +44,11 @@ void vytvorsubor(char fileName[],int n){
 		
 	for(i=0;i<n;i++){
 		write(f,&A[i].d,sizeof(unsigned char));
-		printf("%d ",A[i].d);
+		
 		for(j=0;j<A[i].d;j++){
 		
 			write(f,&A[i].p[j],sizeof(float));
-			printf("%f ",A[i].p[j]);
 		}
-		printf("\n");
 	}										//zapise do suboru 	
 }
 	
