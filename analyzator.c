@@ -80,14 +80,14 @@ void analyzator(char fileName[]){
 		printf("\n");
 	}																		//vypis postupnosti
 	
-	for(i=0;i<n;i++){
-		free(A[i].d);
+	for(i=0;i<n;i++){	
 		
 		for(j=0;j<(int)*A[i].d;j++){
-		
-		free(A[i].p[j]);
+			
+			free(A[i].p[j]);
 	
 		}
+		free(A[i].d);
 	}																		//uvolnenie pamate
 	
 	
