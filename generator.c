@@ -13,22 +13,20 @@
 
 typedef struct{
 	unsigned char d;
-	float p[20];
-}POSTUPNOST;										//struktura pre postupnosti
+	float *p;
+}POSTUPNOST;																		//struktura pre postupnosti
 
 void generuj_postupnost(POSTUPNOST *A){
-	
 	int i;
-	
+
 	A->d=rand()%11+10;
-	
-	
-	
-    for (i=0;i<A->d;i++){
-    	A->p[i]= rand()/(float)(RAND_MAX)* ohranicenie;
-    	
+	printf("%d ",A->d);
+	A->p=malloc((int)A->d*sizeof(float));
+    for (i=0;i<(int)A->d;i++){
+    	A->p[i]= rand()/(float)(RAND_MAX)* ohranicenie; 	
+		printf("%f ",A->p[i]);
 	}
-}											//generuje naodne postupnosti a uklada ich do pola struktur
+}																					//generuje naodne postupnosti a uklada ich do pola struktur
 
 void vytvorsubor(char fileName[],int n){    
 	int f;
@@ -36,28 +34,29 @@ void vytvorsubor(char fileName[],int n){
 	POSTUPNOST A[n];
 	
 	f =  open(fileName,O_WRONLY| O_BINARY | O_CREAT,S_IWUSR);
-
 	
 	for(i=0;i<n;i++){
 		generuj_postupnost(&A[i]);
 	}
-		
-	for(i=0;i<n;i++){
+	
+	for(i=0;i<n;i++){	
 		write(f,&A[i].d,sizeof(unsigned char));
+		printf("%d ",A[i].d);
 		
-		for(j=0;j<A[i].d;j++){
+		for(j=0;j<(int)A[i].d;j++){
 		
 			write(f,&A[i].p[j],sizeof(float));
+			printf("%f ",A[i].p[j]);
 		}
-	}										//zapise do suboru 	
+		printf("\n");														//zapise do suboru 
+	}																		
 }
 	
 int main(int argc,char* argv[]){
+	int i,n;
+
 	srand(time(NULL));
 	
-	int i;
-	char meno[20];
-	int n;
 	n=atoi(argv[2]);
 	
 	if (argc!=3){
@@ -66,5 +65,4 @@ int main(int argc,char* argv[]){
 	}
 	
 	vytvorsubor(argv[1],n);
-
 }
