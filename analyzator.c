@@ -11,24 +11,22 @@
 
 
 typedef struct{
-	unsigned char *d;
-	float *p[20];
+	unsigned char d;
+	float *p;
 }POSTUPNOST;																	//struktura kde d je pocet floatov branych do uvahy pri dalsich vypoctoch
 
 void analyzator(char fileName[]){
-	int f,i,j,n,pocet_bitov;
-	unsigned char c,p,g;
-
+	int f,i,j,n=0,pocet_bitov;
+	unsigned char c,g;
+	float priemer,*priemer_floatov,total_priemer;
+	POSTUPNOST *A;
+	
 	f = open(fileName,O_RDONLY| O_BINARY,S_IWUSR);								
-
 
 	pocet_bitov=lseek(f,0,SEEK_END);											// zistenie dlzky suboru
 
-	lseek(f,0, SEEK_SET);														//navrat file pointera na zaciatok
+	lseek(f,0,SEEK_SET);														//navrat file pointera na zaciatok
 
-		
-		
-		
 	for(i=0;i<pocet_bitov;i++){
 	
 		read(f,&c,sizeof(unsigned char));
@@ -36,33 +34,31 @@ void analyzator(char fileName[]){
 		n++;
 						
 	}																			//vypocet poctu postupnosti
-	
+		
 	printf("pocet postupnosti =%d \n",n);
 	
 	lseek(f, 0, SEEK_SET);
 	
-	POSTUPNOST A[n];
-
-
-	for(i=0;i<n;i++){
+	A=malloc(n*sizeof(POSTUPNOST));
 	
-		A[i].d= (unsigned char *)malloc (sizeof(unsigned char));
-		read(f,A[i].d,sizeof(unsigned char));
+	for(i=0;i<n;i++){
+
+		read(f,&A[i].d,sizeof(unsigned char));
+		A[i].p=malloc((int)A[i].d*sizeof(float));
 		
-		for(j=0;j<(int)*A[i].d;j++){
-			A[i].p[j]= (float*)malloc (sizeof(float));
-				read(f,A[i].p[j],sizeof(float));
-		}		
-	}																		//nacitanie postupnosti do struktur
-	float priemer,priemer_floatov[n],total_priemer;							//deklaracia premennych na vypocet priemerov
-
-
+		for(j=0;j<(int)A[i].d;j++){	
+			read(f,&A[i].p[j],sizeof(float));
+		}
+	}														//nacitanie postupnosti do struktur
+								
+	priemer_floatov=malloc(n*sizeof(float));
 	for(i=0;i<n;i++){
 		
-		for(j=0;j<(int)*A[i].d;j++){
-			priemer+=*A[i].p[j];
+		for(j=0;j<(int)A[i].d;j++){
+			priemer+=A[i].p[j];
+			
 		}
-		priemer_floatov[i]=priemer/(*A[i].d);
+		priemer_floatov[i]=priemer/((int)A[i].d);
 		printf("priemer v %d.postupnosti je= %f\n",i+1,priemer_floatov[i]);
 		priemer=0;
 	}																		//ulozenie priemerov v jednotlivych postupnostiach
@@ -74,31 +70,23 @@ void analyzator(char fileName[]){
 	printf("priemer priemerov postupnosti je= %f\n",total_priemer);
 	
 	for(i=0;i<n;i++){		
-		for(j=0;j<(int)*A[i].d;j++){
-			printf("    %f",*A[i].p[j]);
+		for(j=0;j<(int)A[i].d;j++){
+			printf("%f  ",A[i].p[j]);
 		}
 		printf("\n");
 	}																		//vypis postupnosti
 	
-	for(i=0;i<n;i++){	
+	for(i=0;i<n;i++){
+		free(A[i].p);
 		
-		for(j=0;j<(int)*A[i].d;j++){
-			
-			free(A[i].p[j]);
-	
-		}
-		free(A[i].d);
 	}																		//uvolnenie pamate
-	
-	
+	free(A);	
 }
 int main(int argc,char *argv[]){
-	
-	analyzator(argv[1]);
 	
 	if (argc!=2){
 		printf("zle zadane argumenty");
 		return 0;
 	}
-	
+	analyzator(argv[1]);
 }
