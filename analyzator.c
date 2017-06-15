@@ -16,18 +16,18 @@ typedef struct{
 }POSTUPNOST;																	//struktura kde d je pocet floatov branych do uvahy pri dalsich vypoctoch
 
 void analyzator(char fileName[]){
-	int f,i,j,n=0,pocet_bitov;
+	int f,i,j,n=0,pocet_bajtov;
 	unsigned char c,g;
 	float priemer,*priemer_floatov,total_priemer;
 	POSTUPNOST *A;
 	
 	f = open(fileName,O_RDONLY| O_BINARY,S_IWUSR);								
 
-	pocet_bitov=lseek(f,0,SEEK_END);											// zistenie dlzky suboru
+	pocet_bajtov=lseek(f,0,SEEK_END);											// zistenie dlzky suboru
 
 	lseek(f,0,SEEK_SET);														//navrat file pointera na zaciatok
 
-	for(i=0;i<pocet_bitov;i++){
+	for(i=0;i<pocet_bajtov;i++){
 	
 		read(f,&c,sizeof(unsigned char));
 		i = lseek(f,(int)c*(sizeof(float)), SEEK_CUR);
