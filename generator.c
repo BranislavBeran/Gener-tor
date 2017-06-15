@@ -31,9 +31,11 @@ void generuj_postupnost(POSTUPNOST *A){
 void vytvorsubor(char fileName[],int n){    
 	int f;
 	int i,j;
-	POSTUPNOST A[n];
+		POSTUPNOST *A;
 	
 	f =  open(fileName,O_WRONLY| O_BINARY | O_CREAT,S_IWUSR);
+	
+	A=malloc(n*sizeof(POSTUPNOST));
 	
 	for(i=0;i<n;i++){
 		generuj_postupnost(&A[i]);
