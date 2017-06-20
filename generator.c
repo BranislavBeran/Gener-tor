@@ -31,7 +31,7 @@ void generuj_postupnost(POSTUPNOST *A){
 void vytvorsubor(char fileName[],int n){    
 	int f;
 	int i,j;
-		POSTUPNOST *A;
+	POSTUPNOST *A;
 	
 	f =  open(fileName,O_WRONLY| O_BINARY | O_CREAT,S_IWUSR);
 	
@@ -51,7 +51,8 @@ void vytvorsubor(char fileName[],int n){
 			printf("%f ",A[i].p[j]);
 		}
 		printf("\n");														//zapise do suboru 
-	}																		
+	}
+	free(A);
 }
 	
 int main(int argc,char* argv[]){
